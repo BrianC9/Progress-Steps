@@ -1,0 +1,110 @@
+/*Importamos la fuente que queramos utilizar, bien con la herramienta @import o bien en HTML con el link */
+
+@import url("https://fonts.googleapis.com/css2?family=Muli:wght@400;700&display=swap");
+
+/*PROPIEDADES PERSONALIZADAS, ES DECIR, VARIABLES*/
+:root {
+  --line-border-fill: #3498db;
+  --line-border-empty: #e0e0e0;
+}
+
+* {
+  box-sizing: border-box; /*Si agregamos cualquier Padding o Border a un elemento o afectará al width del propio elemento*/
+}
+body {
+  background-color: #f6f7fb;
+  font-family: Muli, sans-serif;
+  display: flex; /*Lo hacemos para centrar el contenido, ya que vamos a trabjar con proyectos que queremos que se vean en el centro del viewport*/
+  flex-direction: column; /*Por defecto Dispaly:flex; centrará los objetos horizontalmente, en una Row. Con flex-direction: column; nos aseguramos que lo haga verticalmente*/
+  align-items: center; /*Con flex-direction: column; los coloca verticalmente, y con align-items: center; los centramos en el viewport*/
+  justify-content: center; /* Para situar el contenido en el medio del viewport, vertical y horizontalmente */
+  height: 100vh; /* Si no le damos una altura al body, no los podrá centrar en el medio, ya que neceista unas referencias*/
+  overflow: hidden; /*No nos muestra la escrollbar lateral */
+  margin: 0; /*Utilizamos todo el espacio dispnible*/
+}
+.container {
+  text-align: center;
+}
+
+.progress-container {
+  display: flex; /*Los pondra en una fila*/
+  justify-content: space-between; /*El espacio que sobra lo utiliza y lo distribuye entre los números*/
+  position: relative; /*Para poder colocar cualquier elemento dentro de del progress-container*/
+  margin-bottom: 30px;
+  max-width: 100%;
+  width: 300px;
+}
+
+/*Creamos la línea azul de progreso con un pseudo selector*/
+
+.progress-container::before {
+  /*Va a ser la linea que este detrás mas*/
+  content: ""; /*si no añadimos content: ''; no veremos nada ya que con ::before ::after necesitamos utilizar un contenido*/
+  background-color: var(--line-border-empty);
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 4px;
+  width: 100%;
+  transform: translateY(-50%);
+  z-index: -1;
+  transition: 0.4s ease-in;
+}
+
+.progress {
+  background-color: var(--line-border-fill);
+  position: absolute; /*Lo posiciomos absolute dentro del progress-container que tiene un relative position*/
+  top: 50%; /*En el centro verticalmente, teniendo como referencia al div progress-container que tiene una clase relative*/
+  left: 0;
+  height: 4px;
+  width: 0%; /*La situamos en 0% ya que queremos que empiece desde el principio del div progress-container*/
+  transform: translateY(
+    -50%
+  ); /*Sin esta propiedad tenemos a la parte superior de la línea en el centro, pero para dejar el medio de la línea en el centro verticalmente nos guiamos del eje Y*/
+  z-index: -1; /*Para que esté detrás del texto*/
+  transition: 0.4s ease-in; /*Cuando hagamos click queremos que haya una transición en la línea*/
+}
+
+.circle {
+  /*el marco circular de los números*/
+  background-color: #fff;
+  color: #999;
+  border-radius: 50%; /*Un div predeterminado tiene forma de caja por lo que el border radius al 50% lo convierte en un circulo*/
+  height: 30px;
+  width: 30px;
+  /*Ahora para centrar los numeros dentro del div circular*/
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--line-border-empty) 3px solid;
+  transition: 0.4s ease; /*El borde va a cambiar de color dependiendo del avance de la línea azul*/
+}
+
+.circle.active {
+  border-color: var(--line-border-fill);
+}
+
+.btn {
+  background-color: var(--line-border-fill);
+  color: #fff;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 6px 28px;
+  margin: 5px;
+  font-size: 14px;
+}
+/*Para que al hacer click en el boton es decir cuando se activa, haga la animación simulando una pulsación*/
+.btn:active {
+  transform: scale(0.95);
+}
+/* Esta es una forma de eliminar el outline de los botones pero no es aconsejable ya que no cumple con medidas de accesibilidad
+.btn:focus {
+  outline: 0;
+} */
+/*Para indicar que no podemos hacer click en el boton disabled ya que no podemos volver un paso mas anterior a 0*/
+.btn:disabled {
+  background-color: var(--line-border-empty);
+  cursor: not-allowed;
+}
